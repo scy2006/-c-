@@ -1,0 +1,109 @@
+#include<iostream>
+#include<algorithm>
+#include<cmath>
+#include <cstdlib> 
+using namespace std;
+class Point {
+	double x;
+	double y;
+public:
+	Point(double x1=1.0,double y1=1.0) {//构造函数
+		cout << "已创建顶点" << endl;
+		this->x = x1;
+		this->y = y1;
+	}
+	double Distancesqrt(const Point& B) const{//返回开根号
+		double dx = x - B.x;
+		double dy = y - B.y;
+		return sqrt(dx * dx + dy * dy);
+	}
+	double Distance(const Point& B) const{//返回平方值
+		double dx = x - B.x;
+		double dy = y - B.y;
+		return (dx * dx + dy * dy);
+	}
+	Point& operator=(const Point& other) {//运算符重载
+		this->x = other.x;
+		this->y = other.y;
+		return *this;
+	}
+	~Point() {//析构函数
+		cout << "已销毁顶点" << endl;
+	}
+};
+class triangle {
+	Point dot1;
+	Point dot2;
+	Point dot3;
+public:
+	triangle() {//构造函数
+		cout << "请输入该三角形第一个顶点" << endl;
+		double x1, y1;
+		cin >> x1 >> y1;
+		Point A(x1, y1);
+		this->dot1 = A;
+
+		cout << "请输入该三角形第二个顶点" << endl;
+		cin >> x1 >> y1;
+		Point B(x1, y1);
+		this->dot2 = B;
+
+		cout << "请输入该三角形第三个顶点" << endl;
+		cin >> x1 >> y1;
+		Point C(x1, y1);
+		this->dot3 = C;
+	}
+	void output() const{//直接用&，不用复制提高效率
+		double l1 = dot1.Distancesqrt(dot2);
+		double l2= dot2.Distancesqrt(dot3);
+		double l3 = dot3.Distancesqrt(dot1);
+		double c = l1 + l2 + l3;
+		double p = c / 2;
+		double area = sqrt(p * (p - l1) * (p - l2) * (p - l3));
+		cout << "三角形周长为 " << c << "\t" << "面积为 " << area << endl;
+	}
+	bool is_equal(const triangle& other) const {
+
+		double a1 = dot1.Distance(dot2);
+		double a2 = dot2.Distance(dot3);
+		double a3 = dot3.Distance(dot1);
+
+
+		double b1 = other.dot1.Distance(other.dot2);
+		double b2 = other.dot2.Distance(other.dot3);
+		double b3 = other.dot3.Distance(other.dot1);
+
+		double s1[] = { a1, a2, a3 };
+		double s2[] = { b1, b2, b3 };
+
+		sort(s1, s1 + 3);
+		sort(s2, s2 + 3);
+
+		const double eps = 1e-6; 
+		if (fabs(s1[0] - s2[0]) < eps &&
+			fabs(s1[1] - s2[1]) < eps &&
+			fabs(s1[2] - s2[2]) < eps) {
+			return true;
+		}
+		return false;
+	}
+	~triangle() {
+		cout << "三角形已销毁" << endl;
+	}
+};
+int main() {
+	cout << "请输入第一个三角形有关信息" << endl;
+	triangle A;
+	A.output();
+	cout << "请输入第二个三角形有关信息" << endl;
+	triangle B;
+	B.output();
+	if (A.is_equal(B)) {
+		cout << "三角形全等！" << endl;
+	}
+	else {
+		cout << "三角形不全等!" << endl;
+	}
+	system("pause");
+	return 0;
+}
