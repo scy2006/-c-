@@ -1,0 +1,96 @@
+#include<iostream>
+using namespace std;
+template <typename T>
+class Vector {
+private:
+	int rows;
+	T* arr;
+public:
+	Vector(int row=1) {
+		this->rows = row;
+		this->arr = new T [row];
+		cout << "成功构造一个vector" << endl;
+	}
+	~Vector() {
+		delete[] arr;
+		cout << "成功释放一个vector，大小：" << rows << endl;
+	}
+	Vector(const Vector<T>& other) {
+		this->rows = other.rows;
+		this->arr = new T[rows];
+		for (int i = 0; i < rows; i++) {
+			(this->arr)[i] = (other.arr)[i];
+		}
+		cout << "拷贝成功！" << endl;
+	}
+	void input() {
+		cout << "请输入" << rows << "个元素:" << endl;
+		for (int i = 0; i < rows; i++) {
+			cin >> arr[i];
+		}
+		cout << "输入完成";
+	}
+	void output()const {
+		for (int i = 0; i < rows; i++) {
+			cout<< arr[i]<<"\t";
+		}
+		cout << "\n" << "已经输出完毕！\n";
+	}
+	Vector<T> operator+(const Vector<T>& other) {
+		Vector<T> ans(rows);
+		for (int i = 0; i < rows; i++) {
+			ans.arr[i] = arr[i] + other.arr[i];
+		}
+		return ans;
+	}
+	T product(const Vector<T>& other)const {
+		T sum = 0;
+		for (int i = 0; i < rows; i++) {
+			sum += arr[i] * other.arr[i];
+
+		}
+		return sum;
+	}
+	Vector<T>& operator=(const Vector<T>& other) {
+		if (this == &other)return *this;
+		delete[] arr;
+		rows = other.rows;
+		arr = new T[rows];
+		for (int i = 0; i < rows; i++) {
+			arr[i] = other.arr[i];
+		}
+		return *this;
+	}
+
+};
+int main() {
+	Vector<int> V1(8);
+	cout << "请输入V1的内容"<<endl;
+	V1.input();
+	Vector<int>V2(8);
+	cout << "请输入V2的内容"<<endl;
+	V2.input();
+	Vector<int>V3;
+	V3 = V2 + V1;
+	int dots = V2.product(V1);
+	cout << "V3的向量如下" << endl;
+	V3.output();
+	cout << "点乘结果:" << dots << endl;
+	Vector<int>* pV1 = new Vector<int>(6);
+	Vector<int>* pV2 = new Vector<int>(6);
+	Vector<int>* pV3 = new Vector<int>(6);
+	cout << "请输入PV1的内容" << endl;
+	pV1->input();
+	cout << "请输入PV2的内容" << endl;
+	pV2->input();
+	*pV3 = *pV1 + *pV2;
+	cout << "pV3：\n";
+	pV3->output();
+	int dotRes = pV1->product(*pV2);
+	cout << "pV1 和 pV2 点乘结果：" << dotRes << endl;
+	delete pV1;
+	delete pV2;
+	delete pV3;
+	return 1;
+
+}
