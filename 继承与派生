@@ -1,0 +1,90 @@
+#include<iostream>
+using namespace std;
+class Vehicle {
+public:
+	Vehicle() {
+		cout << "A vehicle is creating now.\n";
+	}
+	void calcFuelConsumption() {
+
+	}
+	~Vehicle() {
+		cout << "The vehicle is devastating now.\n";
+	}
+};
+class Car : public Vehicle {
+private:
+	double oil_capacity;
+	double consumption_per_100km;
+public:
+	void calcFuelConsumption(double km)const {
+		double ans = km * consumption_per_100km / 100;
+		if (ans > oil_capacity) {
+			cout << "Wrong,your car can't run this way far!" << endl;
+			return;
+		}
+		else {
+			cout << "You will consume:" << ans << "\n";
+			return;
+		}
+	}
+	Car(double oil,double consumption) {
+		cout << "I am a car!" << endl;
+		oil_capacity = oil;
+		consumption_per_100km = consumption;
+	}
+	~Car() {
+		cout << "A car is dying away" << endl;
+	}
+};
+class Ship :public Vehicle {
+private:
+	double oil_capacity;
+	double consumption_per_seamile;
+public:
+	Ship(double oil, double sm) {
+		oil_capacity = oil;
+		consumption_per_seamile = sm;
+		cout << "A ship is appearing" << endl;
+	}
+	~Ship() {
+		cout << "A ship is dying" << endl;
+	}
+	void calcFuelConsumption(double sm)const {
+		double ans = sm * consumption_per_seamile ;
+		if (ans > oil_capacity) {
+			cout << "Wrong,your ship can't run this way far!" << endl;
+			return;
+		}
+		else {
+			cout << "You will consume:" << ans << "\n";
+			return;
+		}
+	}
+};
+class Truck : public Car {
+private:
+	double maximal_weight;
+public:
+	Truck(double oil, double km, double max) :Car(oil, km) {
+		maximal_weight = max;
+		cout << "You possess a truck!!!" << endl;
+	}
+	~Truck() {
+		cout << "Poor truck! Your truck was despoiled!" << endl;
+	}
+
+};
+int main() {
+	Car a_car(100, 100);
+	Truck a_truck(200, 100, 50);
+	Ship a_ship(100, 5);
+	a_car.calcFuelConsumption(50);
+	a_car.calcFuelConsumption(150);
+	a_truck.calcFuelConsumption(100);
+	a_truck.calcFuelConsumption(250);
+	a_ship.calcFuelConsumption(25);
+	a_ship.calcFuelConsumption(5);
+	system("pause");
+	return 1;
+}
